@@ -24,5 +24,5 @@ jobs:
               echo $DEV_HUB_URL > devHubURLFile
               sfdx force:auth:sfdxurl:store -d -f devHubURLFile
               rm devHubURLFile
-              chmod +x ./scripts/createScratchOrg.sh
-              ./scripts/createScratchOrg.sh
+              chmod +x ${{ github.workspace }}/scripts/createScratchOrg.sh
+              sh ${{ github.workspace }}/scripts/createScratchOrg.sh
