@@ -5,15 +5,12 @@ name:  deployToScratchOrg
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
-    tags:
-      - 'release-*'
     branches: 
       - main
       - 'feature/*'
       - 'bugfix/*'
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 
@@ -22,5 +19,10 @@ jobs:
   deploy-org:
     runs-on: ubuntu-latest
     steps:
-        - run: echo "Hello"
-        - run: echo  "world"
+        - uses: actions/checkout@v2
+        - run: | 
+              echo $DEV_HUB_URL > devHubURLFile
+              sfdx force:auth:sfdxurl:store -d -f devHubURLFile
+              rm devHubURLFile
+              chmod +x ./scripts/createScratchOrg.sh
+              ./scripts/createScratchOrg.sh
